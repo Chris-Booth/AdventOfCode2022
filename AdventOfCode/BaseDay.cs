@@ -10,7 +10,7 @@ namespace AdventOfCode;
 public abstract class BaseDay
 {
     protected ITestOutputHelper TestOutputHelper { get; }
-    protected string Input { get;  }
+    protected string Input { get; set; }
 
     protected BaseDay(ITestOutputHelper testOutputHelper)
     {
