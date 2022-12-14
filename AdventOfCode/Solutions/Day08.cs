@@ -94,11 +94,11 @@ public class Day08 : BaseDay
         var map = Input.ToLines().Select(x => x.ToCharArray().ToList()).ToList();
         int rows = map.Count, cols = map[0].Count;
 
-        int mapScore, biggest = 0;
-        for(int y = 0; y < rows; ++y)
-        for(int x = 0; x < cols; ++x)
+        var biggest = 0;
+        for(var y = 0; y < rows; ++y)
+        for(var x = 0; x < cols; ++x)
         {
-            mapScore = GetScenicScore((y, x), cols, rows, map);
+            var mapScore = GetScenicScore((y, x), cols, rows, map);
             if (mapScore > biggest) biggest = mapScore;
         }
         TestOutputHelper.WriteLine($"Biggest: {biggest}");
@@ -124,20 +124,19 @@ public class Day08 : BaseDay
     private int GetScenicScore((int y, int x) loc, int cols, int rows, List<List<char>>? map)
     {
         if (loc.x == 0 || loc.y == 0 || loc.x == cols - 1 || loc.y == rows - 1) return 0;
-        List<int> scores = new List<int>();
-        int score = 0, maxVal = map[loc.y][loc.x], currentMax = maxVal, localScore, localX, localY, val;
+        var scores = new List<int>();
+        if (map == null) return 0;
+        int score = 0, maxVal = map[loc.y][loc.x];
         foreach (var dir in _directions)
         {
-            val = -1;
-            localScore = 0;
-            currentMax = -1;
-            localX = loc.x + dir.x;
-            localY = loc.y + dir.y;
+            var val = -1;
+            var localScore = 0;
+            var localX = loc.x + dir.x;
+            var localY = loc.y + dir.y;
             while (val < maxVal && localX >= 0 && localX < cols && localY >= 0 && localY < rows)
             {
                 val = map[localY][localX];
                 ++localScore;
-                currentMax = val;
                 localX += dir.x;
                 localY += dir.y;
             }
@@ -145,15 +144,14 @@ public class Day08 : BaseDay
             if (localScore > 0) scores.Add(localScore);
         }
 
-        if (scores.Count > 0)
+        if (scores.Count <= 0) return score;
+        score = scores.First();
+        for (var i = 1; i < scores.Count; ++i)
         {
-            score = scores.First();
-            for (int i = 1; i < scores.Count; ++i)
-            {
-                score *= scores[i];
-            }
+            score *= scores[i];
         }
 
         return score;
+
     }
 }
