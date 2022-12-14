@@ -24,23 +24,11 @@ public class Day12 : BaseDay
         {
             return HashCode.Combine(X, Y);
         }
-
-        public WayPoint? Last { get; set; } = null;
-        public WayPoint Up => this with {X = X - 1, Last = this};
-        public WayPoint Down => this with {X = X + 1, Last = this};
-        public WayPoint Left => this with {Y = Y - 1, Last = this};
-        public WayPoint Right => this with {Y = Y + 1, Last = this};
+        public WayPoint Up => this with {X = X - 1};
+        public WayPoint Down => this with {X = X + 1};
+        public WayPoint Left => this with {Y = Y - 1};
+        public WayPoint Right => this with {Y = Y + 1};
         public bool IsValid => X >= 0 && X < MaxX && Y >= 0 && Y < MaxY;
-
-        public IEnumerable<WayPoint> Seen()
-        {
-            var p = Last;
-            while (p != null)
-            {
-                yield return p;
-                p = p.Last;
-            }
-        }
 
         public override string ToString() => $"{{X: {X}, Y: {Y}}}";
 
@@ -72,13 +60,13 @@ public class Day12 : BaseDay
         {
             var current = GetMarker(lines.GetPoint(currentPoint.ToPoint()));
             if (CheckPoint(currentPoint.Up, lines, currentDistance, current, pathFinder, visited, 'E',
-                    next => CanMoveForward(current, next, currentPoint, visited))) break;
+                    next => CanMoveForward(current, next, currentPoint.Up, visited))) break;
             if (CheckPoint(currentPoint.Down, lines, currentDistance, current, pathFinder, visited, 'E',
-                    next => CanMoveForward(current, next, currentPoint, visited))) break;
+                    next => CanMoveForward(current, next, currentPoint.Down, visited))) break;
             if (CheckPoint(currentPoint.Left, lines, currentDistance, current, pathFinder, visited, 'E',
-                    next => CanMoveForward(current, next, currentPoint, visited))) break;
+                    next => CanMoveForward(current, next, currentPoint.Left, visited))) break;
             if (CheckPoint(currentPoint.Right, lines, currentDistance, current, pathFinder, visited, 'E',
-                    next => CanMoveForward(current, next, currentPoint, visited))) break;
+                    next => CanMoveForward(current, next, currentPoint.Right, visited))) break;
         }
 
         if (pathFinder.Count == 0)
