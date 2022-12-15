@@ -17,6 +17,4 @@ public static class EnumerableExtenstion
 
         return stack;
     }
-    
-
 }
